@@ -1,10 +1,13 @@
-// REVIEWED - 04
+// REVIEWED - 05
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { PropsWithChildren } from "react";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const p = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Yeagerists Project",
@@ -13,8 +16,8 @@ export const metadata: Metadata = {
 
 const RootLayout = function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="h-full">
+      <body className={`${p.className} h-full`}>{children}</body>
     </html>
   );
 };
