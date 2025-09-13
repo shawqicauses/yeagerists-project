@@ -1,4 +1,4 @@
-// REVIEWED - 02
+// REVIEWED - 03
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -7,6 +7,9 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
+import { Blockchain } from "@/collections/Blockchain";
+import { Certificates } from "@/collections/Certificates";
+import { KeyPairs } from "@/collections/KeyPairs";
 import { Media } from "@/collections/Media";
 import { Users } from "@/collections/Users";
 
@@ -21,7 +24,7 @@ export default buildConfig({
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
   editor: lexicalEditor(),
   admin: { user: Users.slug, importMap: { baseDir: path.resolve(dirname) } },
-  collections: [Media, Users],
+  collections: [Media, Users, KeyPairs, Certificates, Blockchain],
   sharp,
   plugins: [],
 });
