@@ -1,7 +1,9 @@
-// REVIEWED - 04
+// REVIEWED - 05
+
+import { redirect } from "next/navigation";
 
 const HomePage = function HomePage() {
-  return <main>Yeagerists Project</main>;
+  redirect("/dashboard");
 };
 
 export default HomePage;

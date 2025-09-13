@@ -1,10 +1,11 @@
-// REVIEWED - 02
+// REVIEWED - 03
 
 import path from "path";
 
 import { Blockchain as BlockchainType } from "@/payload-types";
 
 import { Block, CertificateData } from "./Block";
+// eslint-disable-next-line import/no-cycle
 import { CertificateService } from "./CertificateService";
 
 // Interface for stored block data in PayLoad

@@ -1,11 +1,12 @@
-// REVIEWED
+// REVIEWED - 01
 
 import { Blockchain, Certificate } from "@/payload-types";
 
 import { payload } from "../payload";
 import { StorageBlob } from "../storage/BlobStorage";
 
-import { CertificateData } from "./Block";
+import { Block, CertificateData } from "./Block";
+// eslint-disable-next-line import/no-cycle
 import { Blockchain as BlockchainClass } from "./Blockchain";
 import { CryptoUtils, KeyPair } from "./CryptoUtils";
 
@@ -30,6 +31,19 @@ export interface CertificateSigned {
   blockIndex: number;
 }
 
+export interface VerifyCertificate {
+  isValid: boolean;
+  certificate?: CertificateSigned;
+  verificationDetails: {
+    fileExists: boolean;
+    blockchainVerified: boolean;
+    signatureValid: boolean;
+    contentValid: boolean;
+    primaryHashValid: boolean;
+    metadata?: CertificateMetadata;
+  };
+}
+
 export class CertificateService {
   private blockchain: BlockchainClass;
 
@@ -42,6 +56,17 @@ export class CertificateService {
    */
   async initialize(): Promise<void> {
     await this.blockchain.getFromStorage(CertificateService);
+  }
+
+  /**
+   * Get blockchain information
+   */
+  getBlockchainInfo(): {
+    length: number;
+    isValid: boolean;
+    latestBlock: Block;
+  } {
+    return this.blockchain.getChainInfo();
   }
 
   /**
@@ -460,18 +485,7 @@ export class CertificateService {
   /**
    * Verify a certificate
    */
-  async verifyCertificate(certificateId: number): Promise<{
-    isValid: boolean;
-    certificate?: CertificateSigned;
-    verificationDetails: {
-      fileExists: boolean;
-      blockchainVerified: boolean;
-      signatureValid: boolean;
-      contentValid: boolean;
-      primaryHashValid: boolean;
-      metadata?: CertificateMetadata;
-    };
-  }> {
+  async verifyCertificate(certificateId: number): Promise<VerifyCertificate> {
     const verificationDetails = {
       fileExists: false,
       blockchainVerified: false,

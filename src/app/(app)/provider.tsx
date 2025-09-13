@@ -1,12 +1,12 @@
 "use client";
 
-// REVIEWED
+// REVIEWED - 01
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BookCheckIcon, ShieldCheckIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ElementType, Fragment, PropsWithChildren } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { ElementType, Fragment, PropsWithChildren, useEffect } from "react";
 
 import { SafeHydrate } from "@/components/globals/safe-hydrate";
 import { Separator } from "@/components/ui/separator";
@@ -126,4 +126,17 @@ export const SidebarMainProvider = function SidebarMainProvider({
       </SidebarProvider>
     </SafeHydrate>
   );
+};
+
+export const RedirectProvider = function RedirectProvider({
+  path,
+  children,
+}: { path: string } & PropsWithChildren) {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push(path);
+  }, [router, path]);
+
+  return children;
 };
