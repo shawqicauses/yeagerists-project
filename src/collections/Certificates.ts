@@ -1,4 +1,4 @@
-// REVIEWED
+// REVIEWED - 01
 import { CollectionConfig } from "payload";
 
 export const Certificates: CollectionConfig = {
@@ -69,7 +69,6 @@ export const Certificates: CollectionConfig = {
       name: "fileName",
       label: "File Name",
       type: "text",
-      required: true,
     },
     {
       name: "fileURL",

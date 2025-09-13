@@ -1,12 +1,12 @@
-// REVIEWED
+// REVIEWED - 01
 
 import { CollectionConfig } from "payload";
 
 export const KeyPairs: CollectionConfig = {
   slug: "key-pairs",
   admin: {
-    useAsTitle: "issuerId",
-    defaultColumns: ["issuerId", "createdAt"],
+    useAsTitle: "issuer",
+    defaultColumns: ["issuer", "createdAt"],
   },
   access: {
     read: () => true, // Public read for verification

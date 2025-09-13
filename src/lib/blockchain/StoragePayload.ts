@@ -1,4 +1,4 @@
-// REVIEWED
+// REVIEWED - 02
 
 import { Blockchain, Certificate } from "@/payload-types";
 
@@ -124,14 +124,14 @@ export class StoragePayload {
       const fileName = StorageBlob.generateCertificateFileName(
         certificate.certificateId,
       );
-      const fileInfo = await StorageBlob.uploadFile(bufferFile, fileName);
+      const fileInfo = await StorageBlob.fileUpload(bufferFile, fileName);
 
       //   uploadedAt
       await payload.create({
         collection: "certificates",
         data: {
           ...certificate,
-          fileName: fileInfo.filename,
+          fileName: fileInfo.name,
           fileURL: fileInfo.url,
           fileSize: fileInfo.size,
         },
@@ -164,7 +164,7 @@ export class StoragePayload {
 
       // Download file from Vercel Blob
       const { StorageBlob } = await import("../storage/BlobStorage");
-      return await StorageBlob.downloadFile(certificate.fileURL);
+      return await StorageBlob.fileDownload(certificate.fileURL);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Failed to load certificate from PayLoad:", error);
