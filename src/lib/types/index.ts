@@ -1,8 +1,8 @@
-// REVIEWED
+// REVIEWED - 01
+
+import { User } from "@/payload-types";
 
 // PayLoad CMS
-
-import { User } from "payload";
 
 export type ErrorPayload = {
   status: number;

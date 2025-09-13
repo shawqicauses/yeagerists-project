@@ -1,8 +1,12 @@
-// REVIEWED - 05
+// REVIEWED - 06
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { PropsWithChildren } from "react";
+
+import { Toaster } from "@/components/ui/sonner";
+
 import "./globals.css";
+import { QueryProvider } from "./provider";
 
 const p = Poppins({
   subsets: ["latin"],
@@ -17,7 +21,11 @@ export const metadata: Metadata = {
 const RootLayout = function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${p.className} h-full`}>{children}</body>
+      <body className={`${p.className} h-full`}>
+        <QueryProvider>{children}</QueryProvider>
+
+        <Toaster theme="light" richColors />
+      </body>
     </html>
   );
 };
