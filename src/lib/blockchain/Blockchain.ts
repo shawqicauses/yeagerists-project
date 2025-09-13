@@ -1,9 +1,49 @@
-// REVIEWED
+// REVIEWED - 01
 
-import fs from "fs/promises";
 import path from "path";
 
+import { Blockchain as BlockchainType } from "@/payload-types";
+
 import { Block, CertificateData } from "./Block";
+
+// Interface for stored block data in PayLoad
+interface BlockDateStored {
+  data: CertificateData;
+  hash: string;
+  previousHash: string;
+  nonce: number;
+  timestamp: number;
+  index: number;
+}
+
+// Type guard function to check if data is valid chain data
+const isChainData = (data: unknown): data is BlockDateStored[] => {
+  if (!Array.isArray(data)) return false;
+
+  return data.every(
+    (item) =>
+      item !== null &&
+      typeof item === "object" &&
+      "data" in item &&
+      "hash" in item &&
+      "previousHash" in item &&
+      "nonce" in item &&
+      "timestamp" in item &&
+      "index" in item &&
+      typeof item.hash === "string" &&
+      typeof item.previousHash === "string" &&
+      typeof item.nonce === "number" &&
+      typeof item.timestamp === "number" &&
+      typeof item.index === "number" &&
+      item.data !== null &&
+      typeof item.data === "object" &&
+      "issuerId" in item.data &&
+      "userAccreditId" in item.data &&
+      "certificateHash" in item.data &&
+      "publicKey" in item.data &&
+      "timestamp" in item.data,
+  );
+};
 
 export class Blockchain {
   public chain: Block[];
@@ -91,30 +131,46 @@ export class Blockchain {
 
   async saveToStorage(): Promise<void> {
     try {
-      const directory = path.dirname(this.storagePath);
-      await fs.mkdir(directory, { recursive: true });
-      await fs.writeFile(this.storagePath, JSON.stringify(this.chain, null, 2));
+      const { StoragePayload } = await import("./StoragePayload");
+
+      const blockchainData: Omit<
+        BlockchainType,
+        "id" | "createdAt" | "updatedAt"
+      > = {
+        chainId: "main",
+        chainData: this.chain,
+        length: this.chain.length,
+        difficulty: this.difficulty,
+        isValid: this.isChainValid(),
+        latestBlockHash: this.getLatestBlock().hash,
+        certificatesCount: this.chain.filter(
+          (block) => block.data.issuerId !== "genesis",
+        ).length,
+        mindedAt: new Date().toISOString(),
+      };
+
+      await StoragePayload.saveBlockchain(blockchainData);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error("Error saving blockchain to storage:", error);
+      console.error("Error saving blockchain to PayLoad:", error);
     }
   }
 
   async getFromStorage(): Promise<void> {
     try {
-      const data = await fs.readFile(this.storagePath, "utf-8");
-      const chainData = JSON.parse(data);
+      const { StoragePayload } = await import("./StoragePayload");
+      const blockchainStored = await StoragePayload.getBlockchain();
+
+      if (!blockchainStored) {
+        // eslint-disable-next-line no-console
+        console.log("No existing blockchain found, starting fresh");
+        return;
+      }
 
       // Re-construct blocks from stored data
-      this.chain = chainData.map(
-        (blockData: {
-          data: CertificateData;
-          hash: string;
-          previousHash: string;
-          nonce: number;
-          timestamp: number;
-          index: number;
-        }) => {
+      const { chainData } = blockchainStored;
+      if (isChainData(chainData)) {
+        this.chain = chainData.map((blockData: BlockDateStored) => {
           const block = new Block(
             blockData.index,
             blockData.timestamp,
@@ -126,11 +182,15 @@ export class Blockchain {
           block.nonce = blockData.nonce;
 
           return block;
-        },
-      );
-    } catch {
+        });
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn("In-valid chain data structure found, starting fresh");
+        this.chain = [Blockchain.createGenesisBlock()];
+      }
+    } catch (error) {
       // eslint-disable-next-line no-console
-      console.log("No existing blockchain found, starting fresh");
+      console.log("Error loading blockchain from PayLoad:", error);
     }
   }
 
