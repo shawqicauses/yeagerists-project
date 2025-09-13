@@ -1,4 +1,4 @@
-// REVIEWED
+// REVIEWED - 01
 import type { CollectionConfig } from "payload";
 
 export const Users: CollectionConfig = {
@@ -6,7 +6,26 @@ export const Users: CollectionConfig = {
   admin: { useAsTitle: "email" },
   auth: true,
   fields: [
-    // Email added by default
-    // Add more fields as needed
+    {
+      name: "role",
+      label: "Role",
+      type: "select",
+      options: ["admin", "issuer-user", "accredited-user"],
+      defaultValue: "accredited-user",
+      required: true,
+    },
+    {
+      name: "name",
+      label: "Name",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+      required: true,
+      unique: true,
+    },
   ],
 };
