@@ -1,7 +1,6 @@
 // REVIEWED
 import crypto from "crypto";
 import fs from "fs/promises";
-import path from "path";
 
 export interface KeyPair {
   publicKey: string;
@@ -89,6 +88,39 @@ export class CryptoUtils {
   }
 
   /**
+   * Generate hash of PDF content only (excluding meta data)
+   * This is more reliable for verification after upload/download
+   */
+  static generateContentHash(buffer: Buffer): string {
+    try {
+      // For now, we'll use a simple approach that's more stable
+      // In production, we might want to use a PDF parsing library
+      // to extract only content streams
+
+      // Remove common meta data that changes during upload/download
+      const contentBuffer = this.removePDFMetadata(buffer);
+      return crypto.createHash("sha256").update(contentBuffer).digest("hex");
+    } catch {
+      // Fallback to full buffer hash if processing fails
+      return this.generateBufferHash(buffer);
+    }
+  }
+
+  /**
+   * Remove PDF meta data that can change during upload/download
+   * This is a simplified approach - in production, we should use a proper PDF library
+   */
+  private static removePDFMetadata(buffer: Buffer): Buffer {
+    // This is a simplified approach
+    // In production, we should use a PDF parsing library like `pdf-parse`
+    // to extract only content streams and ignore meta data
+
+    // For now, we'll return original buffer
+    // TODO: Implement proper PDF meta data removal
+    return buffer;
+  }
+
+  /**
    * Create a certificate signature
    */
   static createCertificateSignature(
@@ -121,45 +153,20 @@ export class CryptoUtils {
   }
 
   /**
-   * Save key pair to files
+   * Save key pair to PayLoad CMS
    */
-  static async saveKeyPair(keyPair: KeyPair, issuerId: string): Promise<void> {
-    const keysDirectory = path.join(process.cwd(), "data", "keys", issuerId);
-    await fs.mkdir(keysDirectory, { recursive: true });
-
-    await fs.writeFile(
-      path.join(keysDirectory, "public.pem"),
-      keyPair.publicKey,
-    );
-
-    await fs.writeFile(
-      path.join(keysDirectory, "private.pem"),
-      keyPair.privateKey,
-    );
+  static async saveKeyPair(keyPair: KeyPair, issuerId: number): Promise<void> {
+    // eslint-disable-next-line import/no-cycle
+    const { StoragePayload } = await import("./StoragePayload");
+    await StoragePayload.saveKeyPair(keyPair, issuerId);
   }
 
   /**
-   * Load key pair from files
+   * Load key pair from PayLoad CMS
    */
-  static async getKeyPair(issuerId: string): Promise<KeyPair | null> {
-    try {
-      const keysDirectory = path.join(process.cwd(), "data", "keys", issuerId);
-
-      const publicKey = await fs.readFile(
-        path.join(keysDirectory, "public.pem"),
-        "utf-8",
-      );
-
-      const privateKey = await fs.readFile(
-        path.join(keysDirectory, "private.pem"),
-        "utf-8",
-      );
-
-      return { publicKey, privateKey };
-    } catch (error) {
-      console.error(`Failed to load keys for issuer ${issuerId}:`, error);
-      return null;
-    }
+  static async getKeyPair(issuerId: number): Promise<KeyPair | null> {
+    const { StoragePayload } = await import("./StoragePayload");
+    return StoragePayload.getKeyPair(issuerId);
   }
 
   /**
