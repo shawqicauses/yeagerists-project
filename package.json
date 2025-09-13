@@ -1,5 +1,5 @@
 {
-  "reviewed": "true - 07",
+  "reviewed": "true - 08",
   "name": "yeagerists-project",
   "version": "0.1.0",
   "private": true,
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "0.26.28",
+    "@heroicons/react": "2.2.0",
     "@hookform/resolvers": "3.9.1",
     "@payloadcms/db-mongodb": "3.0.2",
     "@payloadcms/next": "3.0.2",

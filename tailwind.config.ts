@@ -1,4 +1,4 @@
-// REVIEWED - 03
+// REVIEWED - 04
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 import colors from "tailwindcss/colors";
@@ -11,47 +11,56 @@ export const toRGB = function toRGB(value: string) {
 
 export default {
   darkMode: ["class"],
-  content: [
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      screens: {
+        "2xs": "22.5rem",
+        "xs": "27rem",
+      },
       colors: {
-        background: "rgb(var(--background) / <alpha-value>)",
-        foreground: "rgb(var(--foreground) / <alpha-value>)",
-        card: {
+        "background": "rgb(var(--background) / <alpha-value>)",
+        "foreground": "rgb(var(--foreground) / <alpha-value>)",
+        "card": {
           DEFAULT: "rgb(var(--card) / <alpha-value>)",
           foreground: "rgb(var(--card-foreground) / <alpha-value>)",
         },
-        popover: {
+        "popover": {
           DEFAULT: "rgb(var(--popover) / <alpha-value>)",
           foreground: "rgb(var(--popover-foreground) / <alpha-value>)",
         },
-        primary: {
+        "primary": {
           DEFAULT: "rgb(var(--primary) / <alpha-value>)",
           foreground: "rgb(var(--primary-foreground) / <alpha-value>)",
         },
-        secondary: {
+        "secondary": {
           DEFAULT: "rgb(var(--secondary) / <alpha-value>)",
           foreground: "rgb(var(--secondary-foreground) / <alpha-value>)",
         },
-        muted: {
+        "tertiary": {
+          DEFAULT: "rgb(var(--tertiary) / <alpha-value>)",
+          foreground: "rgb(var(--tertiary-foreground) / <alpha-value>)",
+        },
+        "tertiary-2": {
+          DEFAULT: "rgb(var(--tertiary-2) / <alpha-value>)",
+          foreground: "rgb(var(--tertiary-2-foreground) / <alpha-value>)",
+        },
+        "muted": {
           DEFAULT: "rgb(var(--muted) / <alpha-value>)",
           foreground: "rgb(var(--muted-foreground) / <alpha-value>)",
         },
-        accent: {
+        "accent": {
           DEFAULT: "rgb(var(--accent) / <alpha-value>)",
           foreground: "rgb(var(--accent-foreground) / <alpha-value>)",
         },
-        destructive: {
+        "destructive": {
           DEFAULT: "rgb(var(--destructive) / <alpha-value>)",
           foreground: "rgb(var(--destructive-foreground) / <alpha-value>)",
         },
-        border: "rgb(var(--border) / <alpha-value>)",
-        input: "rgb(var(--input) / <alpha-value>)",
-        ring: "rgb(var(--ring) / <alpha-value>)",
-        sidebar: {
+        "border": "rgb(var(--border) / <alpha-value>)",
+        "input": "rgb(var(--input) / <alpha-value>)",
+        "ring": "rgb(var(--ring) / <alpha-value>)",
+        "sidebar": {
           "DEFAULT": "rgb(var(--sidebar-background))",
           "foreground": "rgb(var(--sidebar-foreground))",
           "primary": "rgb(var(--sidebar-primary))",
@@ -78,8 +87,8 @@ export default {
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "accordion-down": "accordion-down 0.2s ease-in-out",
+        "accordion-up": "accordion-up 0.2s ease-in-out",
       },
     },
   },
@@ -96,8 +105,12 @@ export default {
           "--popover-foreground": toRGB(colors.zinc["950"]),
           "--primary": toRGB(colors.zinc["900"]),
           "--primary-foreground": toRGB(colors.zinc["50"]),
-          "--secondary": toRGB(colors.zinc["100"]),
-          "--secondary-foreground": toRGB(colors.zinc["900"]),
+          "--secondary": toRGB(colors.red["500"]),
+          "--secondary-foreground": toRGB(colors.red["100"]),
+          "--tertiary": toRGB(colors.sky["500"]),
+          "--tertiary-foreground": toRGB(colors.sky["100"]),
+          "--tertiary-2": toRGB(colors.green["500"]),
+          "--tertiary-2-foreground": toRGB(colors.green["100"]),
           "--muted": toRGB(colors.zinc["100"]),
           "--muted-foreground": toRGB(colors.zinc["500"]),
           "--accent": toRGB(colors.zinc["100"]),
@@ -107,8 +120,8 @@ export default {
           "--border": toRGB(colors.zinc["200"]),
           "--input": toRGB(colors.zinc["200"]),
           "--ring": toRGB(colors.zinc["950"]),
-          "--sidebar-background": toRGB(colors.zinc["50"]),
-          "--sidebar-foreground": toRGB(colors.zinc["700"]),
+          "--sidebar-background": toRGB(colors.white),
+          "--sidebar-foreground": toRGB(colors.zinc["950"]),
           "--sidebar-primary": toRGB(colors.zinc["900"]),
           "--sidebar-primary-foreground": toRGB(colors.zinc["50"]),
           "--sidebar-accent": toRGB(colors.zinc["100"]),
@@ -127,8 +140,6 @@ export default {
           "--popover-foreground": toRGB(colors.zinc["50"]),
           "--primary": toRGB(colors.zinc["50"]),
           "--primary-foreground": toRGB(colors.zinc["900"]),
-          "--secondary": toRGB(colors.zinc["800"]),
-          "--secondary-foreground": toRGB(colors.zinc["50"]),
           "--muted": toRGB(colors.zinc["800"]),
           "--muted-foreground": toRGB(colors.zinc["400"]),
           "--accent": toRGB(colors.zinc["800"]),
@@ -138,8 +149,8 @@ export default {
           "--border": toRGB(colors.zinc["800"]),
           "--input": toRGB(colors.zinc["800"]),
           "--ring": toRGB(colors.zinc["300"]),
-          "--sidebar-background": toRGB(colors.zinc["900"]),
-          "--sidebar-foreground": toRGB(colors.zinc["100"]),
+          "--sidebar-background": toRGB(colors.zinc["950"]),
+          "--sidebar-foreground": toRGB(colors.zinc["50"]),
           "--sidebar-primary": toRGB(colors.zinc["50"]),
           "--sidebar-primary-foreground": toRGB(colors.zinc["900"]),
           "--sidebar-accent": toRGB(colors.zinc["800"]),
