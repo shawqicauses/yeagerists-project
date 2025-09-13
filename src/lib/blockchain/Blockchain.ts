@@ -1,10 +1,11 @@
-// REVIEWED - 01
+// REVIEWED - 02
 
 import path from "path";
 
 import { Blockchain as BlockchainType } from "@/payload-types";
 
 import { Block, CertificateData } from "./Block";
+import { CertificateService } from "./CertificateService";
 
 // Interface for stored block data in PayLoad
 interface BlockDateStored {
@@ -129,9 +130,15 @@ export class Blockchain {
       .map((block) => block.data);
   }
 
-  async saveToStorage(): Promise<void> {
+  async saveToStorage(
+    certificateService?: typeof CertificateService,
+  ): Promise<void> {
     try {
-      const { StoragePayload } = await import("./StoragePayload");
+      if (!certificateService) {
+        // eslint-disable-next-line no-console
+        console.warn("No certificate service provided for blockchain storage");
+        return;
+      }
 
       const blockchainData: Omit<
         BlockchainType,
@@ -149,17 +156,24 @@ export class Blockchain {
         mindedAt: new Date().toISOString(),
       };
 
-      await StoragePayload.saveBlockchain(blockchainData);
+      await certificateService.saveBlockchain(blockchainData);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error saving blockchain to PayLoad:", error);
     }
   }
 
-  async getFromStorage(): Promise<void> {
+  async getFromStorage(
+    certificateService?: typeof CertificateService,
+  ): Promise<void> {
     try {
-      const { StoragePayload } = await import("./StoragePayload");
-      const blockchainStored = await StoragePayload.getBlockchain();
+      if (!certificateService) {
+        // eslint-disable-next-line no-console
+        console.warn("No certificate service provided for blockchain storage");
+        return;
+      }
+
+      const blockchainStored = await certificateService.getBlockchain();
 
       if (!blockchainStored) {
         // eslint-disable-next-line no-console

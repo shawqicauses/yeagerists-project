@@ -1,4 +1,4 @@
-// REVIEWED
+// REVIEWED - 01
 import crypto from "crypto";
 import fs from "fs/promises";
 
@@ -150,23 +150,6 @@ export class CryptoUtils {
   ): boolean {
     const dataToVerify = `${certificateHash}:${timestamp}`;
     return this.verifySignature(dataToVerify, signature, publicKey);
-  }
-
-  /**
-   * Save key pair to PayLoad CMS
-   */
-  static async saveKeyPair(keyPair: KeyPair, issuerId: number): Promise<void> {
-    // eslint-disable-next-line import/no-cycle
-    const { StoragePayload } = await import("./StoragePayload");
-    await StoragePayload.saveKeyPair(keyPair, issuerId);
-  }
-
-  /**
-   * Load key pair from PayLoad CMS
-   */
-  static async getKeyPair(issuerId: number): Promise<KeyPair | null> {
-    const { StoragePayload } = await import("./StoragePayload");
-    return StoragePayload.getKeyPair(issuerId);
   }
 
   /**
