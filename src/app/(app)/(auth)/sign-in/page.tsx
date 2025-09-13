@@ -1,4 +1,4 @@
-// REVIEWED
+// REVIEWED - 01
 
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 
@@ -40,6 +40,7 @@ export default function SignInPage() {
                   aria-description={signInOption.description}
                   className="has-[:checked]:outline-tertiary-2 group relative flex rounded-lg border border-input bg-background p-4 has-[:disabled]:border-input has-[:disabled]:bg-muted has-[:disabled]:opacity-25 has-[:checked]:outline has-[:focus-visible]:outline has-[:checked]:outline-2 has-[:focus-visible]:outline-[3px] has-[:checked]:-outline-offset-2 has-[:focus-visible]:-outline-offset-1">
                   <input
+                    id={signInOption.id}
                     name="role"
                     type="radio"
                     defaultValue={signInOption.id}
@@ -62,6 +63,61 @@ export default function SignInPage() {
               ))}
             </div>
           </fieldset>
+
+          <div>
+            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+            <label
+              htmlFor="email"
+              className="block text-sm/6 font-medium text-foreground">
+              Email address
+            </label>
+            <div className="mt-2">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="focus:outline-tertiary-2 block w-full rounded-md bg-background px-3 py-1.5 text-base text-foreground outline outline-1 -outline-offset-1 outline-input placeholder:text-muted-foreground focus:outline focus:outline-2 focus:-outline-offset-2 sm:text-sm/6"
+              />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between">
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label
+                htmlFor="password"
+                className="block text-sm/6 font-medium text-foreground">
+                Password
+              </label>
+              <div className="text-sm">
+                <a
+                  href="/password/reset"
+                  className="text-tertiary-2 font-semibold hover:text-foreground">
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            <div className="mt-2">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="focus:outline-tertiary-2 block w-full rounded-md bg-background px-3 py-1.5 text-base text-foreground outline outline-1 -outline-offset-1 outline-input placeholder:text-muted-foreground focus:outline focus:outline-2 focus:-outline-offset-2 sm:text-sm/6"
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="bg-tertiary-2 focus-visible:outline-tertiary-2 flex w-full justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-background shadow-sm hover:bg-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+              Sign in
+            </button>
+          </div>
         </form>
       </div>
     </div>
