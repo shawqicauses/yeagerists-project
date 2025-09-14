@@ -1,9 +1,9 @@
-// REVIEWED - 02
+// REVIEWED - 03
 
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -37,6 +37,11 @@ export const SignUpForm = function SignUpForm() {
       password: "SamplePassword@1234",
     },
   });
+
+  // Sync form role field with roleSelected state
+  useEffect(() => {
+    form.setValue("role", roleSelected);
+  }, [roleSelected, form]);
 
   const handleSubmit = function handleSubmit(data: SignUpSchema) {
     toast.loading("Signing up...", {
