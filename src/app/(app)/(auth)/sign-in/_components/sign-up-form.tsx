@@ -1,4 +1,4 @@
-// REVIEWED - 01
+// REVIEWED - 02
 
 "use client";
 
@@ -32,8 +32,8 @@ export const SignUpForm = function SignUpForm() {
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       role: roleSelected,
-      name: "Sample Name",
-      email: "sample@example.com",
+      name: "Sample Name No. 02",
+      email: "sample_2@example.com",
       password: "SamplePassword@1234",
     },
   });

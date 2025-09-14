@@ -1,6 +1,6 @@
 "use server";
 
-// REVIEWED
+// REVIEWED - 01
 
 import { actionSafeExecute } from "@/lib/network";
 import { payload } from "@/lib/payload";
@@ -56,4 +56,36 @@ export const createUser = async function createUser(
   }
 
   return response;
+};
+
+export const getUsers = async function getUsers(): Promise<
+  ResponseSafeExecute<User[], string>
+> {
+  const response = await actionSafeExecute(
+    payload.find({
+      collection: "users",
+      limit: 100,
+      where: {
+        role: {
+          equals: "accredited-user",
+        },
+      },
+    }),
+    "Server Error.",
+    isResponseErrorHasDataPlusErrors,
+  );
+
+  // Transform response to match expected type
+  if (response.data) {
+    return {
+      data: response.data.docs,
+      error: null,
+    };
+  }
+
+  return {
+    data: null,
+    error:
+      typeof response.error === "string" ? response.error : "Server Error.",
+  };
 };

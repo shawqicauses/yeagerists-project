@@ -1,6 +1,6 @@
 "use server";
 
-// REVIEWED
+// REVIEWED - 01
 
 import {
   Block,
@@ -117,7 +117,7 @@ export const issueCertificate = async function issueCertificate(
  * Verify a certificate
  */
 export const verifyCertificate = async function verifyCertificate(
-  certificateId: string,
+  certificateId: number,
 ): Promise<VerifyCertificateResult> {
   try {
     if (!certificateId) {
@@ -128,9 +128,8 @@ export const verifyCertificate = async function verifyCertificate(
     }
 
     const certificateService = await getCertificateService();
-    const verification = await certificateService.verifyCertificate(
-      parseInt(certificateId, 10),
-    );
+    const verification =
+      await certificateService.verifyCertificate(certificateId);
 
     return {
       success: true,
@@ -223,7 +222,7 @@ export const getIssuerCertificates = async function getIssuerCertificates(
  */
 export const certificateDownload = async function certificateDownload(
   certificateId: string,
-): Promise<{ success: boolean; error?: string; bufferFile?: Buffer }> {
+): Promise<{ success: boolean; error?: string; bufferFile?: string }> {
   try {
     if (!certificateId) {
       return {
@@ -242,9 +241,12 @@ export const certificateDownload = async function certificateDownload(
       };
     }
 
+    // Convert Buffer to base64 string for client component compatibility
+    const base64File = bufferFile.toString("base64");
+
     return {
       success: true,
-      bufferFile,
+      bufferFile: base64File,
     };
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -252,6 +254,91 @@ export const certificateDownload = async function certificateDownload(
     return {
       success: false,
       error: "Failed to download certificate",
+    };
+  }
+};
+
+/**
+ * Verify a certificate by UUID
+ */
+export const verifyCertificateByUUID = async function verifyCertificateByUUID(
+  certificateId: string,
+): Promise<VerifyCertificateResult> {
+  try {
+    if (!certificateId) {
+      return {
+        success: false,
+        error: "Certificate ID is required",
+      };
+    }
+
+    // Validate UUID format
+    const uuidRegex =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(certificateId)) {
+      return {
+        success: false,
+        error: "In-valid certificate ID format",
+      };
+    }
+
+    const verification =
+      await CertificateService.verifyCertificateByUUID(certificateId);
+
+    return {
+      success: true,
+      verification,
+    };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Certificate UUID verification failed:", error);
+    return {
+      success: false,
+      error: "Failed to verify certificate",
+    };
+  }
+};
+
+/**
+ * Verify a certificate by uploading a PDF file
+ */
+export const verifyCertificateByFile = async function verifyCertificateByFile(
+  file: File,
+): Promise<VerifyCertificateResult> {
+  try {
+    if (!file) {
+      return {
+        success: false,
+        error: "File is required",
+      };
+    }
+
+    // Validate file type
+    if (file.type !== "application/pdf") {
+      return {
+        success: false,
+        error: "Only PDF files are allowed",
+      };
+    }
+
+    // Convert file to buffer
+    const bufferFile = Buffer.from(await file.arrayBuffer());
+
+    const verification = await CertificateService.verifyCertificateByFile(
+      bufferFile,
+      file.name,
+    );
+
+    return {
+      success: true,
+      verification,
+    };
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Certificate file verification failed:", error);
+    return {
+      success: false,
+      error: "Failed to verify certificate file",
     };
   }
 };

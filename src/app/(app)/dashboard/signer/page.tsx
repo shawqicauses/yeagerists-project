@@ -1,22 +1,15 @@
 "use client";
 
-// REVIEWED - 02
+// REVIEWED - 03
 
 import { ShieldCheckIcon } from "lucide-react";
-import { useState } from "react";
 
 import { CertificateSigned } from "@/lib/blockchain";
 
-import { CertificateViewer } from "./_components/certificate-viewer";
 import { CertificatesIssued } from "./_components/issued-certificates";
 import { SignerForm } from "./_components/signer-form";
 
 export default function SignerPage() {
-  const [certificateIdSelected, setCertificateIdSelected] = useState<
-    string | null
-  >(null);
-  const [isViewerOpen, setIsViewerOpen] = useState(false);
-
   const doCertificateSuccess = (
     certificate: Pick<
       CertificateSigned,
@@ -25,16 +18,6 @@ export default function SignerPage() {
   ) => {
     // Optionally show success message or redirect
     console.log("Certificate issued successfully:", certificate);
-  };
-
-  const doCertificateView = (certificateId: string) => {
-    setCertificateIdSelected(certificateId);
-    setIsViewerOpen(true);
-  };
-
-  const doViewerClose = () => {
-    setIsViewerOpen(false);
-    setCertificateIdSelected(null);
   };
 
   return (
@@ -56,14 +39,8 @@ export default function SignerPage() {
           <SignerForm onSuccess={doCertificateSuccess} />
         </div>
 
-        <CertificatesIssued onCertificateView={doCertificateView} />
+        <CertificatesIssued />
       </div>
-
-      <CertificateViewer
-        certificateId={certificateIdSelected}
-        isOpen={isViewerOpen}
-        onClose={doViewerClose}
-      />
     </div>
   );
 }

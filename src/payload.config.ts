@@ -1,9 +1,10 @@
-// REVIEWED - 03
+// REVIEWED - 04
 import path from "path";
 import { fileURLToPath } from "url";
 
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
@@ -26,5 +27,11 @@ export default buildConfig({
   admin: { user: Users.slug, importMap: { baseDir: path.resolve(dirname) } },
   collections: [Media, Users, KeyPairs, Certificates, Blockchain],
   sharp,
-  plugins: [],
+  plugins: [
+    vercelBlobStorage({
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      collections: { media: true },
+      enabled: true,
+    }),
+  ],
 });
