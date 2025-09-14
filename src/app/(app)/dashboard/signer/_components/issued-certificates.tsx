@@ -1,6 +1,6 @@
 "use client";
 
-// REVIEWED - 01
+// REVIEWED - 02
 
 import { FileTextIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -109,7 +109,7 @@ export const CertificatesIssued = function CertificatesIssued({
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="shadow-none">
         <CardHeader className="p-5">
           <CardTitle className="flex items-center gap-2">
             <FileTextIcon className="size-5" />
@@ -132,7 +132,7 @@ export const CertificatesIssued = function CertificatesIssued({
   }
 
   return (
-    <Card>
+    <Card className="shadow-none">
       <CardHeader className="p-5">
         <div className="flex items-center justify-between gap-2">
           <div>
