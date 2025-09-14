@@ -1,6 +1,6 @@
 "use client";
 
-// REVIEWED
+// REVIEWED - 01
 
 import { format } from "date-fns";
 import {
@@ -47,12 +47,14 @@ interface CertificateCardProps {
       | "certificateId"
     >;
   };
+  isLoading: boolean;
   onView?: (_certificateId: string) => void;
   onDownload?: (_certificateId: string) => void;
 }
 
 export const CertificateCard = function CertificateCard({
   certificate,
+  isLoading,
   onView,
   onDownload,
 }: CertificateCardProps) {
@@ -196,6 +198,7 @@ export const CertificateCard = function CertificateCard({
               <Button
                 variant="outline"
                 size="sm"
+                disabled={isLoading}
                 onClick={() => onDownload?.(certificate.certificateId)}>
                 <DownloadIcon className="size-5" />
               </Button>
