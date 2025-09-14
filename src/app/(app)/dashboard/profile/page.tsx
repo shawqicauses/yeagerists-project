@@ -1,6 +1,6 @@
 "use client";
 
-// REVIEWED
+// REVIEWED - 01
 
 import { UserIcon } from "lucide-react";
 import Image from "next/image";
@@ -202,19 +202,19 @@ export default function ProfilePage() {
           <CardContent>
             <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary">0</div>
+                <div className="text-3xl font-bold text-primary">+72</div>
                 <div className="text-sm text-muted-foreground">
                   Certificates Issued
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary">0</div>
+                <div className="text-3xl font-bold text-primary">+56</div>
                 <div className="text-sm text-muted-foreground">
                   Certificates Verified
                 </div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary">100%</div>
+                <div className="text-3xl font-bold text-primary">98%</div>
                 <div className="text-sm text-muted-foreground">
                   Verification Accuracy
                 </div>

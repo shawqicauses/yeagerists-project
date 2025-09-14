@@ -1,9 +1,14 @@
 "use client";
 
-// REVIEWED - 02
+// REVIEWED - 03
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BookCheckIcon, ShieldCheckIcon, UserIcon } from "lucide-react";
+import {
+  BookCheckIcon,
+  LogOutIcon,
+  ShieldCheckIcon,
+  UserIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ElementType, Fragment, PropsWithChildren, useEffect } from "react";
@@ -13,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
@@ -24,6 +30,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/hooks/use-auth";
 import { useUser } from "@/hooks/use-user";
 import { getQueryClient } from "@/lib/query";
 
@@ -75,6 +82,8 @@ export const SidebarMainProvider = function SidebarMainProvider({
   children,
 }: PropsWithChildren) {
   const { isPending, data: user } = useUser();
+  const { signOut } = useAuth();
+
   return (
     <SafeHydrate>
       <SidebarProvider defaultOpen>
@@ -121,6 +130,21 @@ export const SidebarMainProvider = function SidebarMainProvider({
               </SidebarMenu>
             </SidebarGroup>
           </SidebarContent>
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem className="group-data-[collapsible_=_icon]:flex group-data-[collapsible_=_icon]:justify-center">
+                <SidebarMenuButton
+                  disabled={signOut.isPending}
+                  onClick={() => signOut.mutate({})}
+                  className="relative overflow-visible text-muted-foreground hover:bg-sidebar hover:text-sidebar-primary active:bg-sidebar active:font-medium active:text-sidebar-primary data-[active_=_true]:bg-sidebar data-[active_=_true]:text-sidebar-primary data-[active_=_true]:after:absolute data-[active_=_true]:after:-left-2 data-[active_=_true]:after:top-0 data-[active_=_true]:after:h-full data-[active_=_true]:after:w-px data-[active_=_true]:after:bg-sidebar-primary group-data-[collapsible_=_icon]:!size-[calc(var(--sidebar-width-icon)_-_2rem)] group-data-[collapsible_=_icon]:!p-0 group-data-[collapsible_=_icon]:data-[active_=_true]:after:-left-4">
+                  <div className="flex aspect-square size-5 items-center justify-center group-data-[collapsible_=_icon]:size-[calc(var(--sidebar-width-icon)_-_2rem)]">
+                    <LogOutIcon className="!size-5 stroke-[1.5]" />
+                  </div>
+                  <span>Sign out</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarFooter>
         </Sidebar>
         <SidebarInset className="w-full max-w-full">
           <header className="top-b fixed left-0 right-0 z-40 flex shrink-0 items-center justify-start bg-background py-4 transition-all duration-100 ease-in-out">
