@@ -1,9 +1,9 @@
 "use client";
 
-// REVIEWED - 01
+// REVIEWED - 02
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BookCheckIcon, ShieldCheckIcon } from "lucide-react";
+import { BookCheckIcon, ShieldCheckIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ElementType, Fragment, PropsWithChildren, useEffect } from "react";
@@ -89,22 +89,33 @@ export const SidebarMainProvider = function SidebarMainProvider({
             <SidebarGroup>
               <SidebarGroupLabel>Pages</SidebarGroupLabel>
               <SidebarMenu>
-                {!isPending && user && user.role === "issuer-user" ? (
+                {!isPending && user ? (
                   <Fragment>
                     <SidebarMenuMainItem
                       item={{
-                        href: "/dashboard/verifier",
-                        label: "Verifier",
-                        icon: BookCheckIcon,
+                        href: "/dashboard/profile",
+                        label: "Profile",
+                        icon: UserIcon,
                       }}
                     />
-                    <SidebarMenuMainItem
-                      item={{
-                        href: "/dashboard/signer",
-                        label: "Signer",
-                        icon: ShieldCheckIcon,
-                      }}
-                    />
+                    {user.role === "issuer-user" ? (
+                      <Fragment>
+                        <SidebarMenuMainItem
+                          item={{
+                            href: "/dashboard/verifier",
+                            label: "Verifier",
+                            icon: BookCheckIcon,
+                          }}
+                        />
+                        <SidebarMenuMainItem
+                          item={{
+                            href: "/dashboard/signer",
+                            label: "Signer",
+                            icon: ShieldCheckIcon,
+                          }}
+                        />
+                      </Fragment>
+                    ) : null}
                   </Fragment>
                 ) : null}
               </SidebarMenu>

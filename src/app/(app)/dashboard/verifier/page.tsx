@@ -1,6 +1,6 @@
 "use client";
 
-// REVIEWED
+// REVIEWED - 01
 
 import { useState } from "react";
 
@@ -32,7 +32,7 @@ export default function VerifierPage() {
     <div className="mx-auto max-w-7xl px-5 lg:px-7">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-          Certificate <span className="text-primary">Verifier</span>.
+          Certificate <span className="text-tertiary-2">Verifier</span>.
         </h1>
         <p className="mt-2 text-muted-foreground md:text-lg">
           View and verify your digitally signed certificates with blockchain
